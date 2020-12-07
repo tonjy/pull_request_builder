@@ -119,8 +119,8 @@ module PullRequestBuilder
     # make it configurable
     def repositories_to_build
       [
-        OpenStruct.new(name: 'SLE_15', path: 'OBS:Server:Unstable', arches: ['x86_64']),
-        OpenStruct.new(name: 'SLE_12_SP4', path: 'OBS:Server:Unstable', arches: ['x86_64'])
+        OpenStruct.new(name: 'SLE_15', path: @obs_project_name, arches: ['x86_64']),
+        OpenStruct.new(name: 'SLE_12_SP4', path: @obs_project_name, arches: ['x86_64'])
       ]
     end
 
