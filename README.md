@@ -47,3 +47,5 @@ The gem is available as open source under the terms of the [MIT License](https:/
 To all contributors from the original code https://github.com/openSUSE/obs-tools/tree/master/pull_request_package
 
 Eduardoj, coolo, ChrisBr and many others!
+
+# Dummy change
