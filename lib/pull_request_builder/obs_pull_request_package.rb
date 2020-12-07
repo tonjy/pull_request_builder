@@ -7,7 +7,7 @@ module PullRequestBuilder
                   :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc
     PullRequest = Struct.new(:number)
 
-    def self.all(logger, obs_project_name_prefix, osc = OSC.new)
+    def self.all(logger, obs_project_name_prefix, osc)
       result = osc.search_project(obs_project_name_prefix)
       xml = Nokogiri::XML(result)
       xml.xpath('//project').map do |project|
