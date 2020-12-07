@@ -21,7 +21,7 @@ module PullRequestBuilder
       @build_server_package_name = config.fetch(:build_server_package_name, 'obs-server')
       @build_server_project_integration_prefix = config.fetch(:build_server_project_integration_prefix,
                                                               'OBS:Server:Unstable:TestGithub:PR')
-      @osc = OSC.new(apiurl: @build_server, logger: @logger)
+      @osc = OSC.new(@build_server, @logger)
     end
 
     def git_repository_full_address
