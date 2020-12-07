@@ -5,7 +5,9 @@ module PullRequestBuilder
     attr_accessor :octokit_client, :logger, :build_server,
                   :build_server_project_integration_prefix,
                   :build_server_project, :build_server_package_name,
-                  :git_server, :git_repository, :git_branch, :osc
+                  :git_server, :git_repository, :git_branch
+    
+    attr_reader :osc
 
     def initialize(config = {})
       @git_server = config.fetch(:git_server, 'https://github.com')
