@@ -12,7 +12,7 @@ module PullRequestBuilder
       @logger = config[:logging] ? Logger.new(STDOUT) : Logger.new(nil)
       @build_server_project = config.fetch(:build_server_project, 'OBS:Server:Unstable')
       @git_branch = config.fetch(:git_branch, 'master')
-      @git_server = config.fetch(:git_repository, 'https://github.com')
+      @git_server = config.fetch(:git_server, 'https://github.com')
       @git_repository = config.fetch(:git_repository, 'openSUSE/open-build-service')
       @build_server = config.fetch(:build_server, 'https://build.opensuse.org')
       @build_server_package_name = config.fetch(:build_server_package_name, 'obs-server')
