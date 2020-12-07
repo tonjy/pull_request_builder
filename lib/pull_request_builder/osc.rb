@@ -5,6 +5,10 @@ module PullRequestBuilder
     include ActiveModel::Model
 
     attr_accessor :apiurl, :logger
+    
+    def initialize(apiurl, logger)
+      @apiurl = apiurl
+      @logger = logger
 
     def checkout(project, dir)
       execute(['co', project, '--output-dir', dir])
