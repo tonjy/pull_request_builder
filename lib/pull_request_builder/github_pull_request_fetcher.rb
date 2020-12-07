@@ -13,7 +13,7 @@ module PullRequestBuilder
       @packages = @config.octokit_client.pull_requests(@config.git_repository).collect do |pull_request|
         next if pull_request.base.ref != @config.git_branch
 
-        @config.logger.info('')
+        @config.logger.info('Processing pull reuqest ' + pull_request.base)
         @config.logger.info(line_seperator(pull_request))
         package = ObsPullRequestPackage.new(pull_request: pull_request, logger: @config.logger,
                                             obs_project_name_prefix: @config.build_server_project_integration_prefix,
