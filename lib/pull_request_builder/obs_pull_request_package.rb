@@ -4,7 +4,8 @@ module PullRequestBuilder
   class ObsPullRequestPackage
     include ActiveModel::Model
     attr_accessor :pull_request, :logger, :template_directory, :obs_project_name_prefix,
-                  :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc
+                  :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc,
+                  :build_server
     PullRequest = Struct.new(:number)
 
     def self.all(logger, obs_project_name_prefix, osc)
@@ -41,17 +42,15 @@ module PullRequestBuilder
     end
 
     def merge_sha
-      pull_request.head.sha
+      "refs/pull/#{pull_request.number}/merge" 
     end
 
     def obs_project_pr_name
       "#{obs_project_name_prefix}-#{pull_request_number}"
     end
 
-    # TODO
-    # address must be configurable
     def url
-      "https://build.opensuse.org/package/show/#{obs_project_pr_name}/#{obs_package_name}"
+      "#{build_server}/package/show/#{obs_project_pr_name}/#{obs_package_name}"
     end
 
     def last_commited_sha
