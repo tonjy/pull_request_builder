@@ -25,6 +25,8 @@ module PullRequestBuilder
       @build_server_package_name = config.fetch(:build_server_package_name, 'obs-server')
       @build_server_project_integration_prefix = config.fetch(:build_server_project_integration_prefix,
                                                               'OBS:Server:Unstable:TestGithub:PR')
+      @build_server_repositories = config.fetch(:build_server_repositories)
+      logger.info(@build_server_repositories)
       @osc = OSC.new(@build_server, @logger)
     end
 
