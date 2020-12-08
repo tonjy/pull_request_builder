@@ -5,6 +5,7 @@ module PullRequestBuilder
     attr_accessor :octokit_client, :logger, :build_server,
                   :build_server_project_integration_prefix,
                   :build_server_project, :build_server_package_name,
+                  :build_server_repositories,
                   :git_server, :git_repository, :git_branch
     
     attr_reader :osc
