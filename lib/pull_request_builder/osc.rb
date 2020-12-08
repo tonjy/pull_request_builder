@@ -6,6 +6,11 @@ module PullRequestBuilder
 
     attr_accessor :apiurl, :logger
 
+    def initialize(apiurl, logger)
+      @apiurl = apiurl
+      @logger = logger
+    end
+
     def checkout(project, dir)
       execute(['co', project, '--output-dir', dir])
     end

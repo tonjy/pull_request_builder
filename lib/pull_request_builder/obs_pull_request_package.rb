@@ -4,10 +4,11 @@ module PullRequestBuilder
   class ObsPullRequestPackage
     include ActiveModel::Model
     attr_accessor :pull_request, :logger, :template_directory, :obs_project_name_prefix,
-                  :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc
+                  :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc,
+                  :build_server, :build_server_repositories
     PullRequest = Struct.new(:number)
 
-    def self.all(logger, obs_project_name_prefix, osc = OSC.new)
+    def self.all(logger, obs_project_name_prefix, osc)
       result = osc.search_project(obs_project_name_prefix)
       xml = Nokogiri::XML(result)
       xml.xpath('//project').map do |project|
@@ -41,18 +42,15 @@ module PullRequestBuilder
     end
 
     def merge_sha
-      # github test merge commit
-      pull_request.merge_commit_sha
+      "refs/pull/#{pull_request.number}/merge"
     end
 
     def obs_project_pr_name
       "#{obs_project_name_prefix}-#{pull_request_number}"
     end
 
-    # TODO
-    # address must be configurable
     def url
-      "https://build.opensuse.org/package/show/#{obs_project_pr_name}/#{obs_package_name}"
+      "#{build_server}/package/show/#{obs_project_pr_name}/#{obs_package_name}"
     end
 
     def last_commited_sha
@@ -115,13 +113,12 @@ module PullRequestBuilder
       pull_request.html_url
     end
 
-    # TODO
-    # make it configurable
     def repositories_to_build
-      [
-        OpenStruct.new(name: 'SLE_15', path: 'OBS:Server:Unstable', arches: ['x86_64']),
-        OpenStruct.new(name: 'SLE_12_SP4', path: 'OBS:Server:Unstable', arches: ['x86_64'])
-      ]
+      result = []
+      @build_server_repositories.each do |name, arches|
+        result.append(OpenStruct.new(name: name, path: @obs_project_name, arches: arches))
+      end
+      result
     end
 
     # TODO

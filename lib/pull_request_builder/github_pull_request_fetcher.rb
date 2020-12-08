@@ -13,20 +13,20 @@ module PullRequestBuilder
       @packages = @config.octokit_client.pull_requests(@config.git_repository).collect do |pull_request|
         next if pull_request.base.ref != @config.git_branch
 
-        @config.logger.info('')
+        @config.logger.info('Processing pull request ' + pull_request.base.ref)
         @config.logger.info(line_seperator(pull_request))
         package = ObsPullRequestPackage.new(pull_request: pull_request, logger: @config.logger,
                                             obs_project_name_prefix: @config.build_server_project_integration_prefix,
                                             obs_package_name: @config.build_server_package_name, obs_project_name: @config.build_server_project,
-                                            osc: @config.osc)
+                                            osc: @config.osc, build_server: @config.build_server, build_server_repositories: @config.build_server_repositories)
         package.create
-        GithubStatusReporter.new(repository: @config.git_repository, package: package, client: @config.octokit_client, logger: @config.logger, osc: OSC.new).report
+        GithubStatusReporter.new(repository: @config.git_repository, package: package, client: @config.octokit_client, logger: @config.logger, osc: @config.osc).report
         package
       end
     end
 
     def delete
-      ObsPullRequestPackage.all(@config.logger, @config.build_server_project_integration_prefix).each do |obs_package|
+      ObsPullRequestPackage.all(@config.logger, @config.build_server_project_integration_prefix, @config.osc).each do |obs_package|
         next if @packages.any? { |pr_package| pr_package.pull_request.number == obs_package.pull_request.number }
 
         @config.logger.info('Delete obs_package')
