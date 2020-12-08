@@ -11,15 +11,17 @@ module PullRequestBuilder
 
     def initialize(config = {})
       @git_server = config.fetch(:git_server, 'https://github.com')
-      @build_server = config.fetch(:build_server, 'https://build.opensuse.org')
-      Octokit.configure do |c|
-        c.api_endpoint = @git_server + "/api/v3/"
+      @git_branch = config.fetch(:git_branch, 'master')
+      @git_repository = config.fetch(:git_repository, 'openSUSE/open-build-service')
+      if @git_server != 'https://github.com'
+        Octokit.configure do |c|
+          c.api_endpoint = @git_server + "/api/v3/"
+        end
       end
       @octokit_client = Octokit::Client.new(config[:credentials])
       @logger = config[:logging] ? Logger.new(STDOUT) : Logger.new(nil)
+      @build_server = config.fetch(:build_server, 'https://build.opensuse.org')
       @build_server_project = config.fetch(:build_server_project, 'OBS:Server:Unstable')
-      @git_branch = config.fetch(:git_branch, 'master')
-      @git_repository = config.fetch(:git_repository, 'openSUSE/open-build-service')
       @build_server_package_name = config.fetch(:build_server_package_name, 'obs-server')
       @build_server_project_integration_prefix = config.fetch(:build_server_project_integration_prefix,
                                                               'OBS:Server:Unstable:TestGithub:PR')
