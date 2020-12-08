@@ -41,8 +41,7 @@ module PullRequestBuilder
     end
 
     def merge_sha
-      # github test merge commit
-      pull_request.merge_commit_sha
+      pull_request.head.sha
     end
 
     def obs_project_pr_name
