@@ -6,12 +6,7 @@ module PullRequestBuilder
     attr_accessor :client, :logger, :package, :repository, :osc
 
     def report
-      if update?
-        logger.info("Update status to state #{state}.")
-        client.create_status(repository, package.commit_sha, state, options)
-      else
-        logger.info('State did not change, continue...')
-      end
+      client.create_status(repository, package.commit_sha, state, options)
     rescue Octokit::Error => e
       logger.error("Status not updated: #{e}.")
     end
