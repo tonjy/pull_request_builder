@@ -13,7 +13,7 @@ module PullRequestBuilder
       xml = Nokogiri::XML(result)
       xml.xpath('//project').map do |project|
         pull_request_number = project.attribute('name').to_s.split('-').last.to_i
-        ObsPullRequestPackage.new(pull_request: PullRequest.new(pull_request_number), logger: logger)
+        ObsPullRequestPackage.new(pull_request: PullRequest.new(pull_request_number), logger: logger, obs_project_name: project.attribute('name').to_s)
       end
     end
 
