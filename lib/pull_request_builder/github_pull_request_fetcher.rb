@@ -29,8 +29,10 @@ module PullRequestBuilder
       ObsPullRequestPackage.all(@config.logger, @config.build_server_project_integration_prefix, @config.osc).each do |obs_package|
         next if @packages.any? { |pr_package| pr_package.pull_request.number == obs_package.pull_request.number }
 
-        @config.logger.info('Delete obs_package: ' + obs_package.url)
-        obs_package.delete()
+        if obs_package.pull_request.number != 0
+          @config.logger.info('Delete obs_package: ' + obs_package.url)
+          obs_package.delete()
+        end
       end
     end
 
