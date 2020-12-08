@@ -18,7 +18,7 @@ module PullRequestBuilder
         package = ObsPullRequestPackage.new(pull_request: pull_request, logger: @config.logger,
                                             obs_project_name_prefix: @config.build_server_project_integration_prefix,
                                             obs_package_name: @config.build_server_package_name, obs_project_name: @config.build_server_project,
-                                            osc: @config.osc, build_server: @config.build_server)
+                                            osc: @config.osc, build_server: @config.build_server, build_server_repositories: @config.build_server_repositories)
         package.create
         GithubStatusReporter.new(repository: @config.git_repository, package: package, client: @config.octokit_client, logger: @config.logger, osc: @config.osc).report
         package

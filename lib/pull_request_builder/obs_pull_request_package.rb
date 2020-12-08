@@ -5,7 +5,7 @@ module PullRequestBuilder
     include ActiveModel::Model
     attr_accessor :pull_request, :logger, :template_directory, :obs_project_name_prefix,
                   :obs_package_name, :obs_project_name, :obs_project_pr_name, :osc,
-                  :build_server
+                  :build_server, :build_server_repositories
     PullRequest = Struct.new(:number)
 
     def self.all(logger, obs_project_name_prefix, osc)
@@ -113,13 +113,12 @@ module PullRequestBuilder
       pull_request.html_url
     end
 
-    # TODO
-    # make it configurable
     def repositories_to_build
-      [
-        OpenStruct.new(name: 'SLE_15', path: @obs_project_name, arches: ['x86_64']),
-        OpenStruct.new(name: 'SLE_12_SP4', path: @obs_project_name, arches: ['x86_64'])
-      ]
+      result = []
+      @build_server_repositories.each do |name, arches|
+        result.append(OpenStruct.new(name: name, path: @obs_project_name, arches: arches))
+      end
+      result
     end
 
     # TODO
